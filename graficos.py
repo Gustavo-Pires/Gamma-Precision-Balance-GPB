@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Oct 12 02:10:53 2022
-
-@author: Gustavo
-"""#Beleza ver se tem a possibilidade do código Python abrir e executar um outro script de pai então salve.py porque se não vai ser muito fácil eu faço um arquivo. PY pra gráficos gerais no caso de média incertezas e o padrão caralho a quatro e aí 11 código pra fazer o Pic ué cê erre dessa determinada amostra e aí depois que ele fez o pique dessa determinada amostra ele roda o script pra gerar os gráfic
 import matplotlib.pyplot as fig 
 import numpy as ny 
 import openpyxl
@@ -29,14 +22,15 @@ fig.title("Espectrometria Gama-"); fig.xlabel("Energia (keV)"); fig.ylabel("Cont
 
 #--------------------------------GRAFICOS GERAIS--------------------------------
 #-----ABRINDO O ARQUIVO DE CONTAS----------------
-#ws2 = xw.Book("contas.xlsx").sheets['Planilha1'] 
+ws2 = xw.Book("contas.xlsx").sheets["Dados brutos"] 
 
 #____________Potassio 40____________
-#p_40_coluna_concetracao = ws2.range("AD32:AD70").value
-#p_40_coluna_incerteza = ws2.range("AD32:AD70").value
-#p_40_total=ws2.range("AF32:AF70").value
-#med_mundial_p40=((400))
+p_40_coluna_concetracao = ws2.range("AD32:AD70").value
+p_40_coluna_incerteza = ws2.range("AD32:AD70").value
+p_40_total=ws2.range("AF32:AF70").value
+med_mundial_p40=((400))
+
 
 #------------GRAFICO CONCETRACAO MEDIA DE POTASSIO 40----------------
-#fig.plot( p_40_total, p_40_coluna_concetracao);  fig.grid(True); fig.title("Concentração de Potassio-40"); fig.xlabel("Amostras"); fig.ylabel("Concentração"); fig.savefig("grafico_do_40.png"); 
+fig.plot( p_40_total, p_40_coluna_concetracao); fig.title("Concentração de Potassio-40"); fig.xlabel("Amostras"); fig.ylabel("Concentração"); fig.savefig("grafico_do_40.png"); 
 fig.show()
