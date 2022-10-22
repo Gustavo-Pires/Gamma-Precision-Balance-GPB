@@ -1,0 +1,52 @@
+import numpy as np
+from typing import Union
+
+# for type checks
+array = list, np.ndarray
+Array = Union[list, np.ndarray]
+Number = Union[int, float]
+elemento = () #lista do elemento 
+
+def get_that_index(data: Array, value: Number, tol: float = 1.5) -> int:
+  """Get index of 'value' from array 'data'
+
+    Parameters
+    ----------
+    data : Array
+        list or numpy.ndarray containing the data
+    value : Number
+        value
+    tol : float
+        tolerance
+    Returns
+    -------
+    int
+        index of 'data' containing 'value' with tolerance 'tol'
+
+    Raises
+    ------
+    TypeError
+        'data' must be int or numpy.ndarray
+    """
+
+  # sanity check for data
+  if not isinstance(data, array):
+    raise TypeError("'data' must be either list or numpy array")
+  if isinstance(data, list):
+    data = np.array(data)
+
+  exact_value = data[np.isclose(value, data, atol=tol)]
+  return np.where(data == exact_value)[0][0]
+
+
+def example():
+  data = [2.2, 4.2, 5.2, 9.6]
+  value = 8.0
+  index = get_that_index(data, value)
+  print(f"The value {value} is at index {index}")
+
+
+if __name__ == "__main__":
+  elemento.apend(0)
+  print("erro")
+  example()
