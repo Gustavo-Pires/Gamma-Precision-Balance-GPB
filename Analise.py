@@ -1,23 +1,26 @@
 #ANALISE SE ESTRA DENTRO DA MEDIA MUNDIAL
-a=() # uranio
-b=()# torio
-c=(500) #potassio 40 
+valor_analise=(400) #potassio 40 
+elemento=("p40")
+med_mundial=() 
 
-#--------------------------------ANALISE POTASSIO 40--------------------------------
-if c < 350:
-    print("O Potassio-40 está abaixo da média mundial. A média mundial é de 400 Bq/kg e sua amostra está com", c, "Bq/kg, ou seja,", (400-c), "Bq/kg, o equivalente a ", (c/40),"vezes abaixo da média mundial, o que repretenta um valor" ((c*100)/400), "% abaixo da média mundial.")
-elif c > 450:
-    print("O Potassio-40 está acima da média mundial. A média mundial é de 400 Bq/kg e sua amostra está com", c, "Bq/kg, ou seja,", (c-400), "Bq/kg, o equivalente a ", (c/40),"vezes acima da média mundial." (((c*100)/400)-100))
-else: 
-    if c >= 350 and c <400:
-        print("O Potassio-40 está dentro dos limites da média mundial. A média mundial é de 400 Bq/kg e sua amostra está com", c, "Bq/kg, ou seja,", (400-c), "Bq/kg, o equivalente a ", (c/40),"vezes abaixo da média mundial.((c*100)/400)")
-    elif c >400 and <450:
-        print("O Potassio-40 está dentro dos limites da média mundial. A média mundial é de 400 Bq/kg e sua amostra está com", c, "Bq/kg, ou seja,", (c-400), "Bq/kg, o equivalente a ", (c/40),"vezez abaixo da média mundial.(((c*100)/400)-100)")
-    else:
-print("O Potassio-40 está exatamente dentro dos limites da média mundial. A média mundial é de 400 Bq/kg") 
+def analise ():
+    output_analise=()
+    analise.append("--------------------------------ANALISE", elemento, "--------------------------------")
+    def condicoes():
+        if valor_analise < 350:
+            analise.append("O ", elemento, " está abaixo da média mundial. A média mundial é de" 400 Bq/kg e sua amostra está valor_analiseom", valor_analise, "Bq/kg, ou seja,", (400-valor_analise), "Bq/kg a menos, o equivalente a ", (valor_analise/40),"vezes abaixo da média mundial, o que repretenta um valor", str((valor_analise*100)/400), "% abaixo da média mundial.")
+        elif valor_analise > 450:
+            analise.append("", elemento, " está avalor_analiseima da média mundial. A média mundial é de 400 Bq/kg e sua amostra está valor_analiseom", valor_analise, "Bq/kg, ou seja,", (valor_analise-400), "Bq/kg a mais, o equivalente a ", (valor_analise/40),"vezes avalor_analiseima da média mundial, o que repretenta um valor", str((((valor_analise*100)/400)-100)), "% avalor_analiseima da média mundial.")
+        else: #valor_analiseondivalor_analiseao valor_analiseaso ela estaja entre 350 e 450
+            if valor_analise <400 :#valor_analise >= 350 and valor_analise <400:#valor_analiseondivalor_analiseao valor_analiseaso ela estaja entre 350 <=399
+                analise.append("", elemento, " está dentro dos limites da média mundial. A média mundial é de 400 Bq/kg e sua amostra está valor_analiseom", valor_analise, "Bq/kg, ou seja,", (400-valor_analise), "Bq/kg, o equivalente a ", (valor_analise/40),"vezes abaixo da média mundial.", str(((valor_analise*100)/400)))
+            elif valor_analise >400 :#valor_analise >400 and valor_analise<450:#valor_analiseondivalor_analiseao valor_analiseaso ela estaja entre 400 <=399
+                analise.append("O ", elemento, " está dentro dos limites da média mundial. A média mundial é de 400 Bq/kg e sua amostra está valor_analiseom", valor_analise, "Bq/kg, ou seja,", (valor_analise-400), "Bq/kg, o equivalente a ", (valor_analise/40),"vezez abaixo da média mundial.", str(((valor_analise*100)/400)-100))
+            else:
+                analise.append("O ", elemento, " está exatamente dentro dos limites da média mundial. A média mundial é de 400 Bq/kg") 
+    analise.append("-----------------------------------------------------------------------------------")
+    elemento.remove(elemento)
+    med_mundial.remove=(med_mundia)
+#porcentagem=(((valor_analise*100)/400)-100)
 
-porcentagem=(((c*100)/400)-100)
-
-print(porcentagem)
-#400- 100
-#c 
+print(output_analise)
