@@ -16,17 +16,29 @@ from itertools import filterfalse
 #-----ABRINDO O ARQUIVO DE CONTAS----------------
 ws2 = xw.Book("contas.xlsx").sheets["Dados brutos"] 
 
-#____________Potassio 40____________
-p_40_coluna_concetracao = ws2.range("AD32:AD70").value
+#_________________________________Potassio 40_________________________________
+p_40_coluna_concentracao = ws2.range("AD32:AD70").value
 p_40_coluna_incerteza = ws2.range("AE32:AE70").value
-p_40_total=ws2.range("AF32:AF70").value
 med_mundial_p40=((400))
 
-for index, value in enumerate(p_40_coluna_concetracao):
+
+for index, value in enumerate(p_40_coluna_concentracao):
     if value <0:
-      p_40_coluna_concetracao.remove(value)
-        #p_40_coluna_concetracao[index] = 
+        print(index)
+        remover=(index)
+        p_40_coluna_concentracao.remove(value)
+        p_40_coluna_incerteza.remove(remover)
+
+
+def somalista(numeros):
+    soma = 0
+    for i in numeros:
+        soma = soma + i
+    return soma
+
+media_concentracao_def=((somalista(p_40_coluna_concentracao))/len(p_40_coluna_incerteza )
+media_concentracao_def=((somalista(p_40_coluna_concentracao))/len(p_40_coluna_incerteza )
         
 #-----------MEDIAS----------
-p_40_med_concetracao = statistics.mean(p_40_coluna_concetracao)
+p_40_med_concentracao = statistics.mean(p_40_coluna_concentracao)
 p_40_med_incerteza=statistics.mean(p_40_coluna_incerteza)
