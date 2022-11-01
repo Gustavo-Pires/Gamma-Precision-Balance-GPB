@@ -42,7 +42,7 @@ lenp40=len(p_40_coluna_concetracao)
 lista=list(range( lenp40))
             
 #------------GRAFICO CONCETRACAO MEDIA DE POTASSIO 40----------------
-fig.plot( lista, p_40_coluna_concetracao); fig.title("Concentração de Potassio-40"); fig.xlabel("Amostras"); fig.ylabel("Concentração"); fig.savefig("grafico_do_40.png"); 
+fig.plot( lista, p_40_coluna_concetracao); fig.title("Concentração de Potassio-40");fig.grid(True); fig.xlabel("Amostras"); fig.ylabel("Concentração"); fig.savefig("grafico_do_40.png"); 
 fig.close('all');
 
 
