@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as fig 
 import numpy as ny 
 import openpyxl
