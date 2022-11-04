@@ -7,9 +7,8 @@ from statistics import median
 from math import isnan
 from itertools import filterfalse
 #----------------------------------------VARIAVEIS INICIAIS----------------------------------------
-funcoesmed= [] #variavel onde sera importado os dados do excel 
-funcoesinc= []#variavel onde sera importado os dados do excel 
-listadef=[]
+analise_amostra=()
+
 #----------------------------------------FUNCOES DE CALCULOS----------------------------------------
 def clearzero(): #Limpar os zeros da lista
     for index, value in enumerate(funcoesmed): #enumerate(listadef)
@@ -26,16 +25,14 @@ def media_statistics(): #calcula a media usando a funcao statistics
     media_con_statistics=statistics.mean(funcoesmed)
     media_inc_statistics=statistics.mean(funcoesinc)
     
-statistics_med= statistics.mean(p_40_coluna_concentracao)
-statists_inc=statistics.mean(p_40_coluna_incerteza)   
-    
 def analise():
     int(med_mundial).clear()
     int(elemento).clear()
-    analise_amostra=()
     analise_amostra = analise_amostra +(("--------------------------------ANALISE", elemento, "--------------------------------"))
-    print("A menor concentração registrada foi de ", min(lista_concetracoes), "Bq/kg") #essa lista de concentrações serar a que a gente importa do excel e vai tirar valor mínimo e máximo 
-    print("A maior concentração registrada foi de ", max(lista_concetracoes), "Bq/kg")
+    analise_amostra.append(("A média da concentração de", elemento, "foi de", media_con_sum, "Bq/kg"))
+    analise_amostra.append(("A média da incerteza de", elemento, "foi de", media_inc_sum, "Bq/kg"))
+    analise_amostra.append("A maior concentração registrada foi de ", min(funcoesinc), "Bq/kg")
+    analise_amostra.append("A maior concentração registrada foi de ", max(funcoesinc), "Bq/kg")
     def condicoes():
         if valor_analise < variacao_1_med_mundial: #350
             analise_amostra = analise_amostra + ("O ", elemento, " está abaixo da média mundial. A média mundial é de", (med_mundial), "Bq/kg e sua amostra está com", (valor_analise), "Bq/kg, ou seja,", (med_mundial-valor_analise), "Bq/kg a menos, o equivalente a ", (valor_analise/med_mundial),"vezes abaixo da média mundial, o que repretenta um valor", str((valor_analise*100)/med_mundial), "% abaixo da média mundial.")
@@ -48,9 +45,7 @@ def analise():
                 analise_amostra = analise_amostra +("O ", elemento, " está dentro dos limites da média mundial. A média mundial é de", (med_mundial), "Bq/kg e sua amostra está com", (valor_analise), "Bq/kg, ou seja,", (valor_analise-med_mundial), "Bq/kg, o equivalente a ", (valor_analise/med_mundial),"vezez abaixo da média mundial.", str(((valor_analise*100)/med_mundial)-100))
             else: #igual a 400
                 analise_amostra = analise_amostra +("O ", elemento, " está exatamente dentro dos limites da média mundial. A média mundial é de", (med_mundial), ".") 
-    analise_amostra = tuple(analise_amostra +("-----------------------------------------------------------------------------------"))
-        
-
+    analise_amostra = analise_amostra +("-----------------------------------------------------------------------------------")
 
 #-----ABRINDO O ARQUIVO DE CONTAS----------------
 ws2 = xw.Book("contas.xlsx").sheets["Dados brutos"] 
@@ -60,12 +55,19 @@ p_40_coluna_concentracao = ws2.range("AD32:AD70").value
 p_40_coluna_incerteza = ws2.range("AE32:AE70").value
 med_mundial_p40=((400))
 
+#variaveis para as funcoes
 funcoesmed=p_40_coluna_concentracao
 funcoesinc=p_40_coluna_incerteza
 
 #------------variaveis-----------
+elemento=("Potassio 40")
+med_mundial=(400)
+variacao_1_med_mundial=(med_mundial)- 50
+variacao_2_med_mundial=(med_mundial)+50 
 media_con_p40=()
 media_inc_p40=()
+valor_analise=media_con_sum #ele ta pegando o valor da media da funcao SUM e nao da funcao statistics
+
 #--------------DEFs--------------
 clearzero() #para retirar os negativos
 media_sum()
@@ -79,25 +81,21 @@ mediasum_con_p40=media_con_p40.append(media_con_statistic) #calcula a media usan
 mediasum_inc_p40=media_inc_p40.apend(media_inc_statistics) 
 #---------------------------------------------------------------------------------------------------------------------------
 
+#esse é um print só para ver qual deles é melhor e mais preciso/veridicio
 print("A media concentracao pela statistics é:", mediasum_con_p40)               #------------------statistics
 print("A media incerteza pela statistics é:", mediasum_inc_p40)
 
-print("A media concentracao pela sum é:", mediasum_con_p40)                            #------------------SUM
+print("A media concentracao pela sum é:", mediasum_con_p40)                          #------------------SUM
 print("A media incerteza pela sum é:", mediasum_inc_p40)
 
-#ANALISE SE ESTRA DENTRO DA MEDIA MUNDIAL
-valor_analise=(340) #potassio 40 
-elemento=("p40")
-med_mundial=[400]
-med_mundial=str(med_mundial)
-variacao_1_med_mundial=(med_mundial[0])- 50
-variacao_2_med_mundial=(med_mundial)+50 
+print("A media concentracao pela sum é:", mediasum_con_p40)                            #------------------excel (FAZER)
+print("A media incerteza pela sum é:", mediasum_inc_p40)
 
-
+#----------------------------SALVANDO ANALISE----------------------------
 print(analise())
-
 with open('ANALISE.txt', 'w') as temp_file:
     for item in analise_amostra:
         temp_file.write("%s\n" % item)
     file = open('ANALISE.txt', 'r')
     print(file.read())
+#------------------------------------------------------------------------
