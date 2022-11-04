@@ -13,11 +13,14 @@ analise_amostra=()
 def clearzero(): #Limpar os zeros da lista
     for index, value in enumerate(funcoesmed): #enumerate(listadef)
         if value <=0:
-            negativo=(index(value))
-            funcoesmed.remove(negativo)
-            funcoesinc.remove(negativo)
+            #funcoesmed.remove((index(value)))#'int' object is not callable
+            #funcoesinc.remove((index(value)))#'int' object is not callable
+            continue
+        else:
+            continue
 
-def media_sum(): #calcula a media fazendo a somatoria e divide pelo numero de elementos da lista
+#ambas as medias de def estao funcionais e sem erro
+def media_sum():#calcula a media fazendo a somatoria e divide pelo numero de elementos da lista
     media_con_sum=(sum(funcoesmed)/len(funcoesmed))
     media_inc_sum=(sum(funcoesinc)/len(funcoesinc))
 
@@ -26,13 +29,14 @@ def media_statistics(): #calcula a media usando a funcao statistics
     media_inc_statistics=statistics.mean(funcoesinc)
     
 def analise():
-    int(med_mundial).clear()
-    int(elemento).clear()
-    analise_amostra = analise_amostra +(("--------------------------------ANALISE", elemento, "--------------------------------"))
-    analise_amostra.append(("A média da concentração de", elemento, "foi de", media_con_sum, "Bq/kg"))
-    analise_amostra.append(("A média da incerteza de", elemento, "foi de", media_inc_sum, "Bq/kg"))
-    analise_amostra.append("A maior concentração registrada foi de ", min(funcoesinc), "Bq/kg")
-    analise_amostra.append("A menor concentração registrada foi de ", max(funcoesinc), "Bq/kg")
+    #int(med_mundial).clear()#'int' object has no attribute 'clear' ---Simplesmente acho que eu posso atribuir a média mundial a cada elemento sem precisar excluir
+    #int(elemento).clear() #mesma anotacao
+    #analise_amostra = analise_amostra +(("--------------------------------ANALISE", elemento, "--------------------------------"))#local variable 'analise_amostra' referenced before assignment
+    #analise_amostra.append(("A média da concentração de", elemento, "foi de", media_con_sum, "Bq/kg"))#local variable 'analise_amostra' referenced before assignment
+    #analise_amostra.append(("A média da incerteza de", elemento, "foi de", media_inc_sum, "Bq/kg"))
+    #analise_amostra.append("A maior concentração registrada foi de ", min(funcoesinc), "Bq/kg") #local variable 'analise_amostra' referenced before assignment
+    #analise_amostra.append("A menor concentração registrada foi de ", max(funcoesinc), "Bq/kg")#local variable 'analise_amostra' referenced before assignment
+   #Bom eu acho que o erro que está no append jáque nas condições abaixou a soma da variável com ela mesmo pra adicionar um elemento ele funciona sem erro nenhum
     def condicoes():
         if valor_analise < variacao_1_med_mundial: #350
             analise_amostra = analise_amostra + ("O ", elemento, " está abaixo da média mundial. A média mundial é de", (med_mundial), "Bq/kg e sua amostra está com", (valor_analise), "Bq/kg, ou seja,", (med_mundial-valor_analise), "Bq/kg a menos, o equivalente a ", (valor_analise/med_mundial),"vezes abaixo da média mundial, o que repretenta um valor", str((valor_analise*100)/med_mundial), "% abaixo da média mundial.")
@@ -66,6 +70,7 @@ variacao_1_med_mundial=(med_mundial)- 50
 variacao_2_med_mundial=(med_mundial)+50 
 media_con_p40=()
 media_inc_p40=()
+media_con_sum=()
 valor_analise=media_con_sum #ele ta pegando o valor da media da funcao SUM e nao da funcao statistics para fazer a analise
 
 #--------------DEFs--------------
@@ -77,11 +82,11 @@ analise()#analise
 #---------------------------------------------------------------------------------------------------------------------------
 
 #esse é um print só para ver qual deles é melhor e mais preciso/veridicio
-print("A media concentracao pela statistics é:", mediasum_con_p40)               #------------------statistics
-print("A media incerteza pela statistics é:", mediasum_inc_p40)
+print("A media concentracao pela statistics é:", media_con_statistics)               #------------------statistics
+print("A media incerteza pela statistics é:", media_inc_statistics)
 
-print("A media concentracao pela sum é:", mediasum_con_p40)                      #------------------SUM
-print("A media incerteza pela sum é:", mediasum_inc_p40)
+print("A media concentracao pela sum é:", media_con_sum)                      #------------------SUM
+print("A media incerteza pela sum é:", media_inc_sum)
 
 print("A media concentracao pela sum é:", ws2.range("AK88").value)               #------------------excel 
 print("A media incerteza pela sum é:", ws2.range("AK89").value)
