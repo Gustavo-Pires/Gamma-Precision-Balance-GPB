@@ -1,5 +1,5 @@
 #----------------------------------------BIBLIOTECAS----------------------------------------
-import xlwings as xw
+import xlwings as xw 
 import numpy as np
 from typing import Union
 import statistics
