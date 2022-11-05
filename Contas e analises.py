@@ -7,7 +7,7 @@ from statistics import median
 from math import isnan
 from itertools import filterfalse
 #----------------------------------------VARIAVEIS INICIAIS----------------------------------------
-analise_amostra=()
+analise_amostra=[]
 
 #----------------------------------------FUNCOES DE CALCULOS----------------------------------------
 def clearzero(): #Limpar os zeros da lista
@@ -31,12 +31,14 @@ def media_statistics(): #calcula a media usando a funcao statistics
 def analise():
     #int(med_mundial).clear()#'int' object has no attribute 'clear' ---Simplesmente acho que eu posso atribuir a média mundial a cada elemento sem precisar excluir
     #int(elemento).clear() #mesma anotacao
-    #analise_amostra = analise_amostra +(("--------------------------------ANALISE", elemento, "--------------------------------"))#local variable 'analise_amostra' referenced before assignment
-    #analise_amostra.append(("A média da concentração de", elemento, "foi de", media_con_sum, "Bq/kg"))#local variable 'analise_amostra' referenced before assignment
-    #analise_amostra.append(("A média da incerteza de", elemento, "foi de", media_inc_sum, "Bq/kg"))
-    #analise_amostra.append("A maior concentração registrada foi de ", min(funcoesinc), "Bq/kg") #local variable 'analise_amostra' referenced before assignment
-    #analise_amostra.append("A menor concentração registrada foi de ", max(funcoesinc), "Bq/kg")#local variable 'analise_amostra' referenced before assignment
-   #Bom eu acho que o erro que está no append jáque nas condições abaixou a soma da variável com ela mesmo pra adicionar um elemento ele funciona sem erro nenhum
+    analise_amostra=[]
+    analise_amostra = analise_amostra + (("--------------------------------ANALISE", elemento, "--------------------------------"))
+    analise_amostra = analise_amostra + (("A média da concentração de", elemento, "foi de", media_con_sum, "Bq/kg"))#can only concatenate list (not "tuple") to list
+    analise_amostra = analise_amostra + (("A média da incerteza de", elemento, "foi de", media_inc_sum, "Bq/kg"))
+    analise_amostra = analise_amostra + ("A maior concentração registrada foi de ", min(funcoesinc), "Bq/kg")
+    analise_amostra = analise_amostra + ("A menor concentração registrada foi de ", max(funcoesinc), "Bq/kg")
+    
+
     def condicoes():
         if valor_analise < variacao_1_med_mundial: #350
             analise_amostra = analise_amostra + ("O ", elemento, " está abaixo da média mundial. A média mundial é de", (med_mundial), "Bq/kg e sua amostra está com", (valor_analise), "Bq/kg, ou seja,", (med_mundial-valor_analise), "Bq/kg a menos, o equivalente a ", (valor_analise/med_mundial),"vezes abaixo da média mundial, o que repretenta um valor", str((valor_analise*100)/med_mundial), "% abaixo da média mundial.")
