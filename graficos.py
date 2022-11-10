@@ -27,22 +27,23 @@ coluna_incerteza = ws.range("E7:E103").value
 ws2 = xw.Book("contas.xlsx").sheets["Dados brutos"] 
 
 #____________Potassio 40____________
-p_40_coluna_concetracao = ws2.range("AD32:AD70").value
-p_40_coluna_incerteza = ws2.range("AE32:AE70").value
-p_40_total=ws2.range("AF32:AF70").value
+p_40_coluna_concetracao = ws2.range("AD32:AD88").value
+p_40_coluna_incerteza = ws2.range("AE32:AE88").value
+p_40_total=ws2.range("AF32:AF88").value
 med_mundial_p40=((400))
 
 for index, value in enumerate(p_40_coluna_concetracao):
     if value <0:
       p_40_coluna_concetracao.remove(value)
         #p_40_coluna_concetracao[index] = 0
+        #fazer um if-else-elif onde o if é se ele for none para remover da lista, else se ele for menor que 0 para remover da lista e elif para ele continuar 
         
 quantidade=()
 lenp40=len(p_40_coluna_concetracao)
 lista=list(range( lenp40))
             
 #------------GRAFICO CONCETRACAO MEDIA DE POTASSIO 40----------------
-fig.plot( lista, p_40_coluna_concetracao); fig.title("Concentração de Potassio-40");fig.grid(True); fig.xlabel("Amostras"); fig.ylabel("Concentração"); fig.savefig("grafico_do_40.png"); 
+fig.plot( lista, p_40_coluna_concetracao); fig.title("Amostras A1-Concentração de Potassio-40 ");fig.grid(True); fig.xlabel("Amostras"); fig.ylabel("Concentração"); fig.savefig("grafico_do_40_amostras_a1.png"); 
 fig.close('all');
 
 
