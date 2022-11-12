@@ -2,7 +2,7 @@
 valor_analise=(340) #potassio 40 
 elemento=("p40")
 med_mundial=(400)
-variacao_1_med_mundial=(med_mundial)- 50
+variacao_1_med_mundial=(med_mundial)- 50 
 variacao_2_med_mundial=(med_mundial)+50 
 
 def analise():
