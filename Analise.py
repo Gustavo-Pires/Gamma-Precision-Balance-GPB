@@ -32,7 +32,7 @@ def analise():
 print(analise())
 
 with open('ANALISE.txt', 'w') as temp_file:
-    for item in analise:
+    for item in analise: 
         temp_file.write("%s\n" % item)
     file = open('ANALISE.txt', 'r')
     print(file.read())
