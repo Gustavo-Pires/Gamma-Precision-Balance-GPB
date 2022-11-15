@@ -7,7 +7,7 @@ variacao_2_med_mundial=(med_mundial)+50
 
 def analise():
     int(med_mundial).clear()
-    int(elemento).clear()
+    int(elemento).clear() 
     analise_amostra=()
     analise_amostra = analise_amostra +(("--------------------------------ANALISE", elemento, "--------------------------------"))
     def condicoes():
