@@ -5,7 +5,7 @@ med_mundial=(400)
 variacao_1_med_mundial=(med_mundial)- 50 
 variacao_2_med_mundial=(med_mundial)+50  
 
-def analise():
+def analise(): 
     int(med_mundial).clear()
     int(elemento).clear() 
     analise_amostra=()
