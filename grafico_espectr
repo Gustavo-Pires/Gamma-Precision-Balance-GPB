@@ -1,0 +1,30 @@
+import matplotlib.pyplot as fig 
+import numpy as ny 
+import openpyxl
+import xlrd 
+import pandas as pd
+import xlrd
+import xlwings as xw
+import os
+import numpy as np
+from typing import Union
+
+ws = xw.Book("espectro .xlsx").sheets['amostra'] 
+#____________elementos____________
+contagem= ws.range("A7:A103").value		
+energia=ws.range("D7:D103").value 
+
+fig.scatter(contagem, energia ); fig.grid(False); fig.title("Concentração média-A1"); fig.xlabel("Elemento"); fig.ylabel("Concentração(Bq/kg)"); fig.savefig("espectro1.png"); 
+fig.close('all');
+
+fig.plot(contagem, energia ); fig.grid(True); fig.title("Espectro"); fig.xlabel("Energia"); fig.ylabel("Contagem"); fig.savefig("espectro2.png"); 
+fig.close('all');
+
+
+ws2 = xw.Book("calibracao.xlsx").sheets['calibracao'] 
+#____________elementos____________
+contagem= ws2.range("A7:A55").value		
+energia=ws2.range("D7:D55").value 
+
+fig.plot(energia, contagem ); fig.grid(True); fig.title("Espectro"); fig.xlabel("Energia"); fig.ylabel("Contagem"); fig.savefig("espectro3.png"); 
+fig.close('all');
