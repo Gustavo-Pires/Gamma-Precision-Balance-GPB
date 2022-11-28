@@ -11,8 +11,13 @@ from typing import Union
 
 ws = xw.Book("espectro .xlsx").sheets['amostra'] 
 #____________elementos____________
-contagem= ws.range("A7:A103").value		
-energia=ws.range("D7:D103").value 
+contagem= ws.range("A7:A200").value		
+energia=ws.range("D7:D200").value 
+
+contagem= [x for x in contagem if x is not None]
+energia= [x for x in energia if x is not None]
+
+        
 
 fig.scatter(contagem, energia ); fig.grid(False); fig.title("Concentração média-A1"); fig.xlabel("Elemento"); fig.ylabel("Concentração(Bq/kg)"); fig.savefig("espectro1.png"); 
 fig.close('all');
