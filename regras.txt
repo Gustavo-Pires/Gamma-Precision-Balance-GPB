@@ -1,0 +1,1 @@
+Nao ter mais de um arquvivo .csv por diretorio(pasta) 
