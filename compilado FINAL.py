@@ -58,8 +58,10 @@ def plotar_grafico(ekev_57, ekev_60, dia, titulo, media_57, media_60, incerteza_
 
     plt.tight_layout()
     plt.savefig(f'{nome_arquivo}.png', dpi=300)
+    wb.close() 
 
 for arquivo_excel in arquivos_excel:
+    print(arquivo_excel)
     wb = xw.Book(arquivo_excel)
     ws = wb.sheets['Plan1']
 
@@ -83,5 +85,14 @@ for arquivo_excel in arquivos_excel:
 
     incerteza_57 = 0.2 * media_57  # 20% da média de incerteza para o Cobalto-57
     incerteza_60 = 0.3 * media_60  # 30% da média de incerteza para o Cobalto-60
-
+    if len(ekev_57)== len(ekev_60):
+        continue 
+    else: 
+        if len(ekev_57) < len(ekev_60):
+            print("Faltam dados de calibração de 57 keV")
+            break
+        else:
+            print("Faltam dados de calibração de 60 keV")
+            break
+        
     plotar_grafico(ekev_57, ekev_60, dia, titulo_completo, media_57, media_60, incerteza_57, incerteza_60)
