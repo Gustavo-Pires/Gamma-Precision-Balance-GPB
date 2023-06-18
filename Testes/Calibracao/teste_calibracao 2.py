@@ -8,7 +8,13 @@ import os
 import glob
 import sys
 import csv
+import re
+import locale
+from decimal import Decimal
 
+
+# Definir o locale para o formato correto
+locale.setlocale(locale.LC_ALL, '')
 #------------------------------------------------------------------------------------------------------
 #---------------------------------------------CONTAGEM -------------------------------------
 print("="*20 + "CALIBRAÇÃO INICIADA" + "="*20  )
@@ -31,31 +37,14 @@ nome_arquivo_csv = os.path.basename(arquivos_csv[0])
 nome_arquivo_sem_extensao = os.path.splitext(nome_arquivo_csv)[0]
 print("Arquivo de calibração: " + nome_arquivo_csv)
 
-# Importar valores do arquivo CSV
-with open(nome_arquivo_csv, 'r') as arquivo_csv:
-    leitor_csv = csv.reader(arquivo_csv)
+df = pd.read_csv(nome_arquivo_csv, decimal=',', thousands='.', delimiter=';')
+ekev = df['Ekev'].tolist()
+contagem = df['Contagem'].tolist()
+incerteza = df['Incerteza'].tolist()
+data = df['Data'].tolist()
+canal = df['Canal'].tolist()
+resolucao = df['Resolucao'].tolist()
 
-    ekev = []
-    contagem = []
-    incerteza = []
-    data = []
-    canal = []
-    resolucao = []
-
-    linha_atual = 0
-    for linha in leitor_csv:
-        linha_atual += 1
-        if linha_atual >= 7 and linha_atual <= 27:
-            ekev.append(float(linha[0].replace(',', '.')))
-            contagem.append(float(linha[3].replace(',', '.')))
-            incerteza.append(float(linha[4].replace(',', '.')))
-            data.append(linha[0])
-            if len(linha) >= 6:
-                canal.append(float(linha[5].replace(',', '.')))
-            if len(linha) >= 2:
-                resolucao.append(float(linha[1].replace(',', '.')))
-
-arquivo_csv.close()
 
 #----------removendo celulas vazias---------- 
 ekev = [x for x in ekev if pd.notnull(x)]
