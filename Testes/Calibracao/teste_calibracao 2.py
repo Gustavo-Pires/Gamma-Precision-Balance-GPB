@@ -129,6 +129,7 @@ for j in range(len(ekev)):
 
 if not encontrado:
     print("Pico de energia do co-57 não encontrado dentro da variação.")
+    print("="*20 + "CALIBRAÇÃO NÃo CONCLUIDA" + "="*20  )
     sys.exit()
 
     
@@ -148,6 +149,7 @@ for j in range(len(ekev)):
 
 if not encontrado:
     print("Pico de energia do co-60 não encontrado dentro da variação.")
+    print("="*20 + "CALIBRAÇÃO NÃo CONCLUIDA" + "="*20  )
     sys.exit()
 
 
