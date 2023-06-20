@@ -28,17 +28,32 @@ elif len(arquivos_csv) > 1:
     print("=" * 20 + "CALIBRAÇÃO NÃO REALIZADA" + "=" * 20)
     sys.exit()
 
-nome_arquivo_excel = None# Procurar por um arquivo Excel no diretório atual e obter o caminho absoluto do arquivo
-for nome_arquivo in os.listdir(diretorio_atual):
-    if nome_arquivo.endswith('.xls'): # ou .xls, dependendo da extensão do arquivo
-        nome_arquivo_excel = nome_arquivo
-        break
+arquivo_csv = arquivos_csv[0]
 
-if nome_arquivo_excel is not None:
-    caminho_arquivo_excel = os.path.join(diretorio_atual, nome_arquivo_excel)
+try:
+    with open(arquivo_csv, newline='') as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+        
+        # Extrair as colunas específicas
+        ekev = [row[0] for row in rows[6:27]]
+        resolucao = [row[1] for row in rows[6:27]]
+        canal = [row[5] for row in rows[6:27]]
+        contagem = [row[3] for row in rows[6:27]]
+        incerteza = [row[4] for row in rows[6:27]]
+        data = rows[1][0]
+        nome_amostra = rows[0][0].rsplit("\\", 1)[-1]
+        print(nome_amostra)
 
-else:
-    print("Nenhum arquivo Excel foi encontrado no diretório atual.")
+        # Remover células vazias
+        ekev = [x for x in ekev if x]
+        resolucao = [x for x in resolucao if x]
+        canal = [x for x in canal if x]
+        contagem = [x for x in contagem if x]
+        incerteza = [x for x in incerteza if x]
+
+except FileNotFoundError:
+    print("Arquivo CSV não encontrado.")
 
 #------------------------------------------------------------------------------------------------------
 end_time1= time.time()
@@ -47,26 +62,6 @@ elapsed_time1= end_time1 - start_time1
 nome = input('Digite seu nome: ')
 start_time2= time.time() 
 #---------------------------------------------ARQUIVO DE CONTAGEM -------------------------------------
-wb = xw.Book("CALI1712.xls")# abre a planilha
-ws = wb.sheets['Worksheet']
- 
-ekev = ws.range("A7:A27").options(numbers=str).value
-resolucao = ws.range("B7:B27").options(numbers=str).value
-canal = ws.range("F7:F27").options(numbers=str).value
-contagem = ws.range("D7:D27").options(numbers=str).value
-incerteza = ws.range("E7:E27").options(numbers=str).value
-data=ws.range("A2").options(numbers=str).value
-nome_amostra= ws.range("A1").options(numbers=str).value
-nome_amostra = nome_amostra.rsplit("\\", 1)[-1]
-print(nome_amostra)
-wb.close() # fecha a planilha
-
-#----------removendo celulas vazias----------
-ekev= [x for x in  ekev if x is not None]
-resolucao= [x for x in resolucao if x is not None]
-canal= [x for x in canal if x is not None]
-contagem= [x for x in contagem if x is not None]
-incerteza= [x for x in incerteza if x is not None]
 
 #-------------------------------------------------------------------------------------------------
 
