@@ -8,76 +8,71 @@ import os
 import glob
 import sys
 import csv
+import re
+import locale
+
 
 #------------------------------------------------------------------------------------------------------
 #---------------------------------------------CONTAGEM -------------------------------------
-print("="*20 + "CALIBRAÇÃO INICIADA" + "="*20  )
+print("=" * 20 + "CALIBRAÇÃO INICIADA" + "=" * 20)
 
-diretorio_atual = os.path.abspath(os.path.dirname(__file__))  # Obter o caminho absoluto do diretório atual
-arquivos_csv = glob.glob(os.path.join(diretorio_atual, '*.csv'))  # Obter a lista de arquivos CSV no diretório
+diretorio_atual = os.path.abspath(os.path.dirname(__file__))
+arquivos_csv = glob.glob(os.path.join(diretorio_atual, '*.csv'))
 
-# Verificar a quantidade de arquivos CSV no diretório
 if len(arquivos_csv) == 0:
     print("Nenhum arquivo CSV foi encontrado no diretório atual.")
-    print("="*20 + "CALIBRAÇÃO NÃO REALIZADA" + "="*20  )
-    sys.exit()  # Encerrar a execução do código
+    print("=" * 20 + "CALIBRAÇÃO NÃO REALIZADA" + "=" * 20)
+    sys.exit()
 elif len(arquivos_csv) > 1:
-    print("Mais de um arquivo CSV foi encontrado no diretório atual. \nDeixei apenas o aquivo correto")
-    print("="*20 + "CALIBRAÇÃO NÃO REALIZADA" + "="*20  )
-    sys.exit()  # Encerrar a execução do código
+    print("Mais de um arquivo CSV foi encontrado no diretório atual. \nDeixei apenas o arquivo correto")
+    print("=" * 20 + "CALIBRAÇÃO NÃO REALIZADA" + "=" * 20)
+    sys.exit()
 
-# Se chegarmos aqui, há exatamente um arquivo CSV no diretório
-nome_arquivo_csv = os.path.basename(arquivos_csv[0])
-nome_arquivo_sem_extensao = os.path.splitext(nome_arquivo_csv)[0]
-print("Arquivo de calibração: " + nome_arquivo_csv)
+nome_arquivo_excel = None# Procurar por um arquivo Excel no diretório atual e obter o caminho absoluto do arquivo
+for nome_arquivo in os.listdir(diretorio_atual):
+    if nome_arquivo.endswith('.xls'): # ou .xls, dependendo da extensão do arquivo
+        nome_arquivo_excel = nome_arquivo
+        break
 
-# Importar valores do arquivo CSV
-with open(nome_arquivo_csv, 'r') as arquivo_csv:
-    leitor_csv = csv.reader(arquivo_csv)
+if nome_arquivo_excel is not None:
+    caminho_arquivo_excel = os.path.join(diretorio_atual, nome_arquivo_excel)
 
-    ekev = []
-    contagem = []
-    incerteza = []
-    data = []
-    canal = []
-    resolucao = []
-
-    linha_atual = 0
-    for linha in leitor_csv:
-        linha_atual += 1
-        if linha_atual >= 7 and linha_atual <= 27:
-            ekev.append(float(linha[0].replace(',', '.')))
-            contagem.append(float(linha[3].replace(',', '.')))
-            incerteza.append(float(linha[4].replace(',', '.')))
-            data.append(linha[0])
-            if len(linha) >= 6:
-                canal.append(float(linha[5].replace(',', '.')))
-            if len(linha) >= 2:
-                resolucao.append(float(linha[1].replace(',', '.')))
-
-arquivo_csv.close()
-
-#----------removendo celulas vazias---------- 
-ekev = [x for x in ekev if pd.notnull(x)]
-contagem = [x for x in contagem if pd.notnull(x)]
-incerteza = [x for x in incerteza if pd.notnull(x)]
-canal = [x for x in canal if pd.notnull(x)]
-resolucao = [x for x in resolucao if pd.notnull(x)]
-#----------------------------------------------
-print(ekev)
-
-#-------------------------------------------------------------------------------------------------
+else:
+    print("Nenhum arquivo Excel foi encontrado no diretório atual.")
 
 #------------------------------------------------------------------------------------------------------
 end_time1= time.time()
+
 elapsed_time1= end_time1 - start_time1
-
 nome = input('Digite seu nome: ')
-
 start_time2= time.time() 
+#---------------------------------------------ARQUIVO DE CONTAGEM -------------------------------------
+wb = xw.Book("CALI1712.xls")# abre a planilha
+ws = wb.sheets['Worksheet']
+ 
+ekev = ws.range("A7:A27").options(numbers=str).value
+resolucao = ws.range("B7:B27").options(numbers=str).value
+canal = ws.range("F7:F27").options(numbers=str).value
+contagem = ws.range("D7:D27").options(numbers=str).value
+incerteza = ws.range("E7:E27").options(numbers=str).value
+data=ws.range("A2").options(numbers=str).value
+nome_amostra= ws.range("A1").options(numbers=str).value
+nome_amostra = nome_amostra.rsplit("\\", 1)[-1]
+print(nome_amostra)
+wb.close() # fecha a planilha
+
+#----------removendo celulas vazias----------
+ekev= [x for x in  ekev if x is not None]
+resolucao= [x for x in resolucao if x is not None]
+canal= [x for x in canal if x is not None]
+contagem= [x for x in contagem if x is not None]
+incerteza= [x for x in incerteza if x is not None]
+
+#-------------------------------------------------------------------------------------------------
+
 
 #---------------------------------------------IMPORTANDO DADOS-------------------------------------
-ws2 = xw.Book("calibracao.xls").sheets['Calibracao']
+ws2 = xw.Book("Calibracao.xlsx").sheets['Calibracao']
 
 data_hora= ws2.range("B9:B40").options(numbers=str).value
 
@@ -122,7 +117,8 @@ valor_procurado = 122.06
 encontrado = False
 
 for j in range(len(ekev)):
-    if abs(float(ekev[j]) - valor_procurado) <= 2:
+    valor = ekev[j].replace(" ", "").replace(",", ".")
+    if float(valor) >= valor_procurado - 2 and float(valor) <= valor_procurado + 2:
         encontrado = True
         co_57_ekev.append(ekev[j])
         co_57_resolucao.append(resolucao[j])
@@ -132,17 +128,18 @@ for j in range(len(ekev)):
         break  # interrompe o laço de repetição
 
 if not encontrado:
-    print("Pico de energia não encontrado dentro da variação.")
+    print("Pico de energia do co-57 não encontrado dentro da variação.")
     sys.exit()
 
+    
 valor_procurado = 1332.5
 encontrado = False
 
 for j in range(len(ekev)):
-    if abs(float(ekev[j]) - valor_procurado) <= 2:
+    valor = ekev[j].replace(" ", "").replace(",", ".")
+    if float(valor) >= valor_procurado - 2 and float(valor) <= valor_procurado + 2:
         encontrado = True
         co_60_ekev.append(ekev[j])
-        print(co_60_ekev)
         co_60_resolucao.append(resolucao[j])
         co_60_contagem.append(contagem[j])
         co_60_incerteza.append(incerteza[j])
@@ -150,12 +147,27 @@ for j in range(len(ekev)):
         break  # interrompe o laço de repetição
 
 if not encontrado:
-    print("Pico de energia não encontrado dentro da variação.")
+    print("Pico de energia do co-60 não encontrado dentro da variação.")
     sys.exit()
+
 
 #----------------------------------------------------------------------------------------------------------------
 
 #-----------------------SALVANDO-----------------------------------------------------------------------------------------
+# Convertendo os valores para o formato americano com ponto decimal
+co_57_ekev = [x.replace('.', ',') for x in co_57_ekev]
+co_57_resolucao = [x.replace('.', ',') for x in co_57_resolucao]
+co_57_canal = [x.replace('.', ',') for x in co_57_canal]
+co_57_contagem = [x.replace('.', ',') for x in co_57_contagem]
+co_57_incerteza = [x.replace('.', ',') for x in co_57_incerteza]
+
+co_60_ekev = [x.replace('.', ',') for x in co_60_ekev]
+co_60_resolucao = [x.replace('.', ',') for x in co_60_resolucao]
+co_60_canal = [x.replace('.', ',') for x in co_60_canal]
+co_60_contagem = [x.replace('.', ',') for x in co_60_contagem]
+co_60_incerteza = [x.replace('.', ',') for x in co_60_incerteza]
+
+# Salvando os dados convertidos no formato americano
 ws2.range('B9:B40').options(transpose=True).value = [data_hora]
 ws2.range('C9:C40').options(transpose=True).value = [co_57_ekev]
 ws2.range('D9:D40').options(transpose=True).value = [co_57_resolucao]
@@ -166,7 +178,7 @@ ws2.range('H9:H40').options(transpose=True).value = [co_60_ekev]
 ws2.range('I9:I40').options(transpose=True).value = [co_60_resolucao]
 ws2.range('J9:J40').options(transpose=True).value = [co_60_canal]
 ws2.range('K9:K40').options(transpose=True).value = [co_60_contagem]
-ws2.range('L9:L40').options(transpose=True).value = [co_60_incerteza] 
+ws2.range('L9:L40').options(transpose=True).value = [co_60_incerteza]
 ws2.range('M9:M40').options(transpose=True).value = [usuario]
 
 
@@ -181,12 +193,10 @@ elapsed_time = elapsed_time1 + elapsed_time2
 #wb.save()
 #ws2.close()
 
-end_time2= time.time()
-elapsed_time2= end_time2 - start_time2
-elapsed_time = elapsed_time1 + elapsed_time2
-
 print("Tempo de execução:", elapsed_time, "segundos")
 print("="*20 + "CALIBRAÇÃO CONCLUIDA" + "="*20  )
+
+
 
 
 
