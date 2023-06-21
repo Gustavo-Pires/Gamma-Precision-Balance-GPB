@@ -20,7 +20,7 @@ if len(arquivos_csv) == 0:
     print("=" * 20 + "CALIBRAÇÃO NÃO REALIZADA" + "=" * 20)
     sys.exit()
 elif len(arquivos_csv) > 1:
-    print("Mais de um arquivo CSV foi encontrado no diretório atual. \nDeixei apenas o arquivo correto")
+    print("Mais de um arquivo CSV foi encontrado no diretório atual. \nDeixe apenas o arquivo correto")
     print("=" * 20 + "CALIBRAÇÃO NÃO REALIZADA" + "=" * 20)
     sys.exit()
 
@@ -37,10 +37,10 @@ try:
         contagem = [str(line.split(';')[3]).replace(',', '.') for line in lines[6:27]]
         incerteza = [str(line.split(';')[4]).replace(',', '.') for line in lines[6:27]]
         data = str(lines[1].split(';')[0])
-        data_hora = str(lines[1].split(';')[0])
-        nome_amostra = str(lines[0].split(';')[0].rsplit("\\", 1)[-1])
-        print(nome_amostra)
-
+        data_hora = str(lines[1].split(';')[0].strip())  # Remover espaços em branco extras
+        nome_amostra = os.path.basename(arquivo_csv).rsplit(".", 1)[0]
+        print("O nome do arquivo de calibração é: ", nome_amostra)
+        
         # Remover células vazias
         ekev = [x if x != 'None' else '' for x in ekev]
         resolucao = [x if x != 'None' else '' for x in resolucao]
@@ -48,26 +48,29 @@ try:
         contagem = [x if x != 'None' else '' for x in contagem]
         incerteza = [x if x != 'None' else '' for x in incerteza]
 
+        # Extrair dia e mês da data
+        data_obj = datetime.strptime(data_hora, "%d/%m/%Y %H:%M:%S")
+        dia_mes = data_obj.strftime("%d-%m")
+        
         # Mover o arquivo CSV para a pasta "ARQUIVO"
         pasta_destino = os.path.join(diretorio_atual, 'ARQUIVO')
         if not os.path.exists(pasta_destino):
             os.makedirs(pasta_destino)
         
-        nome_arquivo = os.path.basename(arquivo_csv)
-        caminho_destino = os.path.join(pasta_destino, nome_arquivo)
+        # Novo nome do arquivo
+        novo_nome_arquivo = f"{dia_mes}.csv"
+        caminho_destino = os.path.join(pasta_destino, novo_nome_arquivo)
         
         shutil.move(arquivo_csv, caminho_destino)
+
 except FileNotFoundError:
-    print("Arquivo CSV não encontrado.")
+   print("Arquivo CSV não encontrado.")
 #------------------------------------------------------------------------------------------------------
 end_time1= time.time()
 
 elapsed_time1= end_time1 - start_time1
 nome = input('Digite seu nome: ')
 start_time2= time.time() 
-#---------------------------------------------ARQUIVO DE CONTAGEM -------------------------------------
-
-#-------------------------------------------------------------------------------------------------
 
 
 #---------------------------------------------IMPORTANDO DADOS-------------------------------------
