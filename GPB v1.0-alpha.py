@@ -1,12 +1,14 @@
 #---------------------------------------------BIBLIOTECAS ---------------------------------------------
 import time
 start_time1= time.time()
+from datetime import datetime
 import xlwings as xw
 import os
 import glob
 import sys
 import shutil
 
+#------------------------------------------------------------------------------------------------------
 #---------------------------------------------CONTAGEM -------------------------------------
 print("=" * 20 + "CALIBRAÇÃO INICIADA" + "=" * 20)
 
@@ -55,7 +57,6 @@ try:
         caminho_destino = os.path.join(pasta_destino, nome_arquivo)
         
         shutil.move(arquivo_csv, caminho_destino)
-        print
 except FileNotFoundError:
     print("Arquivo CSV não encontrado.")
 #------------------------------------------------------------------------------------------------------
@@ -66,8 +67,11 @@ nome = input('Digite seu nome: ')
 start_time2= time.time() 
 #---------------------------------------------ARQUIVO DE CONTAGEM -------------------------------------
 
+#-------------------------------------------------------------------------------------------------
+
+
 #---------------------------------------------IMPORTANDO DADOS-------------------------------------
-ws2 = xw.Book("Calibracao.xlsx").sheets['Calibracao']
+ws2 = xw.Book("Calibracao.xls").sheets['Calibracao']
 
 data_hora= ws2.range("B9:B40").options(numbers=str).value
 
@@ -146,6 +150,8 @@ if not encontrado:
     print("Pico de energia do co-60 não encontrado dentro da variação.")
     print("="*20 + "CALIBRAÇÃO NÃo CONCLUIDA" + "="*20  )
     sys.exit()
+
+
 #----------------------------------------------------------------------------------------------------------------
 
 #-----------------------SALVANDO-----------------------------------------------------------------------------------------
@@ -175,6 +181,8 @@ ws2.range('J9:J40').options(transpose=True).value = [co_60_canal]
 ws2.range('K9:K40').options(transpose=True).value = [co_60_contagem]
 ws2.range('L9:L40').options(transpose=True).value = [co_60_incerteza]
 ws2.range('M9:M40').options(transpose=True).value = [usuario]
+
+
 #----------------------------------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------
@@ -188,4 +196,9 @@ elapsed_time = elapsed_time1 + elapsed_time2
 
 print("Tempo de execução:", elapsed_time, "segundos")
 print("="*20 + "CALIBRAÇÃO CONCLUIDA" + "="*20  )
+
+
+
+
+
 
