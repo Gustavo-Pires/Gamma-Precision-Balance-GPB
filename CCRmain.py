@@ -11,7 +11,7 @@
 #Ou seja, as barras são invertidas! 
 #Se tentar acessar um endereço que não existe (como um C: no Linux ou /home no Windows) vai dar erro sim em seus scripts!
 #-------------------------------------------------------
-
+ 
 #talvez fazer um arquivo de log onde ele vai la e informa qual amostra foi ja calcula, adicionando a uma lista de execel para 
 #posteriormente facilitar a analise dos dados pelo fato de ja saber quais foram analisadas e terem os nomes delas 
 
