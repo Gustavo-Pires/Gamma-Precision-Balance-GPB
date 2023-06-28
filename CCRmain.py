@@ -1,7 +1,7 @@
 #CODIGO DE CALCULO DE RADIONUCLIDEOS(CCR) 
 
 #-------------IMPORTANTE--------------------------------
-#TODA CONTAGEM TEM QUE SER SALVADA COM O NOME "AMOSTRA"
+#TODA CONTAGEM TEM QUE SER SALVADA COM O NOME "AMOSTRA" 
 # DEVE EXISTIR UMA PANILHA COM O PESO E IDENTIFICACAO DAS AMOSTRAS #fazer modelo 
 #------------------------------------------------------- 
     
