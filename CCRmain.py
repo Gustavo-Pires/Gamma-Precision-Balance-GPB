@@ -5,7 +5,7 @@
 # DEVE EXISTIR UMA PANILHA COM O PESO E IDENTIFICACAO DAS AMOSTRAS #fazer modelo 
 #-------------------------------------------------------    
     
-#-------------IMPORTANTE--------------------------------
+#-------------IMPORTANTE-------------------------------- 
 #Uma pasta do Windows: C:\Windows\Jose\Python
 #Um diretório no Linux : /home/user/Maria/Python   
 #Ou seja, as barras são invertidas! 
