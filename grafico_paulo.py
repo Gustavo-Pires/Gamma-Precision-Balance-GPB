@@ -4,7 +4,7 @@ import seaborn as sns
 from datetime import datetime
 import matplotlib.dates as mdates
 import os  
-
+ 
 diretorio_atual = os.path.abspath(os.path.dirname(__file__))  # Obtain the absolute path of the current directory
  
 nome_arquivo_excel = None  # Search for an Excel file in the current directory and obtain the absolute path of the file
