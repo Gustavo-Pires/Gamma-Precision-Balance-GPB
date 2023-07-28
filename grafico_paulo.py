@@ -1,9 +1,9 @@
-import xlwings as xw
+ import xlwings as xw
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 import matplotlib.dates as mdates 
-import os  
+import os   
  
 diretorio_atual = os.path.abspath(os.path.dirname(__file__))  # Obtain the absolute path of the current directory
  
