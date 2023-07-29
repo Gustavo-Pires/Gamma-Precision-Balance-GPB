@@ -1,61 +1,76 @@
+#---------------------------------------------BIBLIOTECAS ---------------------------------------------
+import time
+start_time1= time.time()
+import xlwings as xw
+import os
+import glob
+import sys
+import shutil
+
 #---------------------------------------------CONTAGEM -------------------------------------
 print("=" * 20 + "CALIBRAÇÃO INICIADA" + "=" * 20)
 
 diretorio_principal = os.getcwd() # usa o diretório atual como o diretório principal
 
-# Abre o arquivo de log em modo de anexação
-with open("log_erros.txt", "a") as log_file:
-    for diretorio_atual, _, arquivos in os.walk(diretorio_principal):
-        arquivos_csv = [f for f in arquivos if f.endswith('.csv')]
+# Sinalizador para indicar se ocorreram erros
+ocorreu_erro = False
+mensagens_erro = []
 
-        if len(arquivos_csv) == 0:
-            mensagem = f"Nenhum arquivo CSV foi encontrado no diretório {diretorio_atual}."
-            print(mensagem)
-            log_file.write(mensagem + "\n")
-            continue
-        elif len(arquivos_csv) > 1:
-            mensagem = f"Mais de um arquivo CSV foi encontrado no diretório {diretorio_atual}. \nDeixe apenas o arquivo correto"
-            print(mensagem)
-            log_file.write(mensagem + "\n")
-            continue
+for diretorio_atual, _, arquivos in os.walk(diretorio_principal):
+    arquivos_csv = [f for f in arquivos if f.endswith('.csv')]
 
-        arquivo_csv = os.path.join(diretorio_atual, arquivos_csv[0])
-        try:
-            with open(arquivo_csv, newline='') as file:
-                lines = file.readlines()
+    if len(arquivos_csv) == 0:
+        mensagem = f"Nenhum arquivo CSV foi encontrado no diretório {diretorio_atual}."
+        print(mensagem)
+        mensagens_erro.append(mensagem + "\n")
+        ocorreu_erro = True
+        continue
+    elif len(arquivos_csv) > 1:
+        mensagem = f"Mais de um arquivo CSV foi encontrado no diretório {diretorio_atual}. \nDeixe apenas o arquivo correto"
+        print(mensagem)
+        mensagens_erro.append(mensagem + "\n")
+        ocorreu_erro = True
+        continue
 
-                # Extrair as colunas específicas
-                ekev = [str(line.split(';')[0]).replace(',', '.') for line in lines[6:27]]
-                resolucao = [str(line.split(';')[1]).replace(',', '.') for line in lines[6:27]]
-                canal = [str(line.split(';')[5]).replace(',', '.') for line in lines[6:27]]
-                contagem = [str(line.split(';')[3]).replace(',', '.') for line in lines[6:27]]
-                incerteza = [str(line.split(';')[4]).replace(',', '.') for line in lines[6:27]]
-                data = str(lines[1].split(';')[0])
-                data_hora = str(lines[1].split(';')[0])
-                nome_amostra = str(lines[0].split(';')[0].rsplit("\\", 1)[-1])
-                print(nome_amostra)
+    arquivo_csv = os.path.join(diretorio_atual, arquivos_csv[0])
+    try:
+        with open(arquivo_csv, newline='') as file:
+            lines = file.readlines()
 
-                # Remover células vazias
-                ekev = [x if x != 'None' else '' for x in ekev]
-                resolucao = [x if x != 'None' else '' for x in resolucao]
-                canal = [x if x != 'None' else '' for x in canal]
-                contagem = [x if x != 'None' else '' for x in contagem]
-                incerteza = [x if x != 'None' else '' for x in incerteza]
+            # Extrair as colunas específicas
+            ekev = [str(line.split(';')[0]).replace(',', '.') for line in lines[6:27]]
+            resolucao = [str(line.split(';')[1]).replace(',', '.') for line in lines[6:27]]
+            canal = [str(line.split(';')[5]).replace(',', '.') for line in lines[6:27]]
+            contagem = [str(line.split(';')[3]).replace(',', '.') for line in lines[6:27]]
+            incerteza = [str(line.split(';')[4]).replace(',', '.') for line in lines[6:27]]
+            data = str(lines[1].split(';')[0])
+            data_hora = str(lines[1].split(';')[0])
+            nome_amostra = str(lines[0].split(';')[0].rsplit("\\", 1)[-1])
+            print(nome_amostra)
 
-                # Mover o arquivo CSV para a pasta "ARQUIVO"
-                pasta_destino = os.path.join(diretorio_atual, 'ARQUIVO')
-                if not os.path.exists(pasta_destino):
-                    os.makedirs(pasta_destino)
-                
-                nome_arquivo = os.path.basename(arquivo_csv)
-                caminho_destino = os.path.join(pasta_destino, nome_arquivo)
-                
-                shutil.move(arquivo_csv, caminho_destino)
-                print
-        except FileNotFoundError:
-            mensagem = "Arquivo CSV não encontrado."
-            print(mensagem)
-            log_file.write(mensagem + "\n")
+            # Remover células vazias
+            ekev = [x if x != 'None' else '' for x in ekev]
+            resolucao = [x if x != 'None' else '' for x in resolucao]
+            canal = [x if x != 'None' else '' for x in canal]
+            contagem = [x if x != 'None' else '' for x in contagem]
+            incerteza = [x if x != 'None' else '' for x in incerteza]
+
+            # Mover o arquivo CSV para a pasta "ARQUIVO"
+            pasta_destino = os.path.join(diretorio_atual, 'ARQUIVO')
+            if not os.path.exists(pasta_destino):
+                os.makedirs(pasta_destino)
+            
+            nome_arquivo = os.path.basename(arquivo_csv)
+            caminho_destino = os.path.join(pasta_destino, nome_arquivo)
+            
+            shutil.move(arquivo_csv, caminho_destino)
+            print
+    except FileNotFoundError:
+        mensagem = "Arquivo CSV não encontrado."
+        print(mensagem)
+        mensagens_erro.append(mensagem + "\n")
+        ocorreu_erro = True
+
 #------------------------------------------------------------------------------------------------------
 end_time1= time.time()
 
@@ -186,4 +201,3 @@ elapsed_time = elapsed_time1 + elapsed_time2
 
 print("Tempo de execução:", elapsed_time, "segundos")
 print("="*20 + "CALIBRAÇÃO CONCLUIDA" + "="*20  )
-
