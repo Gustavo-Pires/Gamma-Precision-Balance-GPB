@@ -6,7 +6,7 @@ import os
 import glob
 import sys
 import shutil
-
+ 
 #---------------------------------------------CONTAGEM -------------------------------------
 print("=" * 20 + "CALIBRAÇÃO INICIADA" + "=" * 20)
 
