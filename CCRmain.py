@@ -4,7 +4,7 @@
 #TODA CONTAGEM TEM QUE SER SALVADA COM O NOME "AMOSTRA" 
 # DEVE EXISTIR UMA PANILHA COM O PESO E IDENTIFICACAO DAS AMOSTRAS #fazer modelo 
 #-------------------------------------------------------       
-    
+     
 #-------------IMPORTANTE-------------------------------- 
 #Uma pasta do Windows: C:\Windows\Jose\Python 
 #Um diretório no Linux : /home/user/Maria/Python    
