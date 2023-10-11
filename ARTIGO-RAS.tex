@@ -1,0 +1,309 @@
+% rasti_template.tex 
+%
+% LaTeX template for creating an RASTI paper
+%
+% v1.3 relased 20 July 2023
+% 
+%
+% Copyright (C) Royal Astronomical Society 2023
+% Authors:
+% Peter Jones (OUP, adapted from mnras_template.tex, author Keith T. Smith (Royal Astronomical Society))
+
+% Change log
+%
+% v1.0 November 2021
+%    Adapted from mnras_template.tex
+% v1.1 February 2022
+%    rasti.bst updated to match output style for Geophysical Journal International 
+% v.1.2 April 2022
+%    minor updates to author instructions (word limit, contact adddress, keywords)
+% v1.3 July 2023
+%   updated guidance on use of amssymb package
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{rasti}
+
+% RASTI is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+
+% Allow "Thomas van Noord" and "Simon de Laguarde" and alike to be sorted by "N" and "L" etc. in the bibliography.
+% Write the name in the bibliography as "\VAN{Noord}{Van}{van} Noord, Thomas"
+\DeclareRobustCommand{\VAN}[3]{#2}
+\let\VANthebibliography\thebibliography
+\def\thebibliography{\DeclareRobustCommand{\VAN}[3]{##3}\VANthebibliography}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Avoid using amssymb if newtxmath is enabled, as these packages can cause conflicts. newtxmatch covers the same math symbols while producing a consistent Times New Roman font. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[Python software for quality control on HPGe detectors]{Python software for quality control on HPGe detectors}
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[Bertaco, G. P. et al.]{
+BERTACO, G. P.,$^{1}$\thanks{E-mail: gustavo.pb@usp.br}
+ SILVA, P. S. C.,$^{2}$
+SILVA, B. F.$^{3}$
+SEMMLER, R$^{2}$
+\\
+% List of institutions
+$^{1}$IAG-USP, Astronomy Department, São Paulo, Brazi\\
+$^{2}$Nuclear and Energy Research Institute- IPEN,CRPq, São Paulo, Brazil\\
+$^{3}$Center of Nuclear Energy in Agriculture (CENA), São Paulo, Brazil
+}
+
+% These dates will be filled out by the publisher
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Enter the current year, for the copyright statements etc.
+\pubyear{2022}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+Development of software using python to carry out the calibration and storage process in addition to carrying out quality control of the efficiency and credibility of High Purity Germanium (HPGe) Radiation Detectors used in the search for neutrino less double beta decay, nuclear physics and dark matter research.
+\end{abstract}
+
+% Include between one and six keywords.
+\begin{keywords}
+gamma-spectrometry -- HPGe -- data-processing
+\end{keywords}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+\label{introduction}
+Currently, Python is an extremely popular high-level programming language that can be used for data analysis, scientific programming, and many other purposes. This popularity is due to the readability of Python code. Many of its expressions and functions are very similar to the English language, which greatly facilitates learning, understanding and executing programs and codes. The language aims at high productivity and a high degree of readability, in addition to adding excellent libraries and resources.
+
+The management of libraries is done by Anaconda, a distribution of the programming language used, mainly aimed at scientific computing, whose main objectives are to simplify the management and deployment of packages, the so-called libraries, being able to mention Numpy for the automation of the processing of data using a large collection of high-level mathematical functions, Matplotlib for plotting the quality control plots discussed in \ref{sec:qualityparameters}, among several other libraries used for other functions executed for the program.
+
+Radiation detectors made of High Purity Germanium (HPGe) are in the front line of fundamental research since their first development. Mainly used as gamma-ray detectors they also play an important role in the field of the search for neutrinoless double-beta decay, nuclear physics and are used for dark matter searches as well\citep{abrosimov2020technology}.
+
+\section{Methods and Experimental Procedure}
+\subsection{Get Calibration Measurements}
+
+The daily calibration measurements are performed by the first person to use the detector in a these day; the user places a non-calibrated detector-specific piled-up $^{57+60}$Co source on the spe- cified position and performs a 600 s livetime acquisition (all detectors work with pile-up reject turned off). 
+
+The spectra are analyzed using a suitable software \citep{canberra1999} which calculates peak position, resolution, area (in counts per second of livetime acquisition) and uncertainty\citep{zahn2017long}.
+
+\subsubsection{Old method}
+The program saves this verification data in a .csv file which, using the previous method, was manually transcribed onto a paper spreadsheet, along with the date and time of the measurement and who carried out this verification, which were later typed into an electronic spreadsheet in order to store these data.
+
+\subsubsection{Method here presented-GPB}
+The program written in python named Gamma Precision Balance (GPB), takes this .csv file, imports/extracts its necessary data, and using repetition structures it finds the determined peak of the 2 elements with a margin of 1 keV of variation for more or less, so as the characteristic peak of is $^{57}$Co is 122.06 keV, it searches between 121.06 and 123.06keV and for $^{60}$Co with characteristic peak of 1332, 5 keV, between 1331.5 and 1333.5 keV. When it finds a value between these limiting parameters, it takes that value, which in this case is the energy, extracts the position of this data in the variable, with this position it takes the other relevant data in the other variables, such as the resolution.
+
+It stores this data in the same digital spreadsheet used by the old method, but the first difference and advantage is that it is done automatically and in an extremely short period of time. After storing the calibration data for this day, it imports/extracts all the calibration data for that particular month present in this worksheet to perform the quality control plots, image \ref{fig:jan17}, with certain parameters, section \ref{sec:qualityparameters}, which are later automatically saved as a .png file in the directory.
+
+This automation ends up bringing benefits, considering that many users of detectors do not calibrate because of the old process of having to transfer it to paper, and then having to transfer it to a spreadsheet. In addition, the GPB presents the \ref{sec:qualityparameters} quality control in a visual way, taking the time to analyze and even some prior knowledge, considering that it is not a fixed parameter, but rather a constancy of the data. Thus providing data of greater credibility and confidence. And other benefits will be discussed later in the section \ref{sec:erros}. 
+
+
+
+\begin{itemize}
+  \item Importação de bibliotecas necessárias para realizar as tarefas, como \texttt{time}, \texttt{datetime}, \texttt{xlwings}, \texttt{pandas}, \texttt{os}, \texttt{glob}, \texttt{sys}, \texttt{csv}, \texttt{re}, \texttt{locale} e \texttt{matplotlib.pyplot} que fornecem funcionalidades para manipulação de tempo, arquivos, planilhas do Excel, manipulação de dados, manipulação de diretórios, expressões regulares, formatação numérica e geração de gráficos e outras.
+  \item Verificações de arquivos
+    \begin{itemize}
+      \item Verificação do arquivo de Calibração: Se nenhum arquivo no formato CSV for encontrado ou mais de um arquivo for encontrado, uma mensagem é exibida e o programa é encerrado.
+      \item Verificação de erros: O código verifica se não há nenhum erro na planilha, como dados faltando ou letras nos lugares de números.
+    \end{itemize}
+  \item Leitura, importação como variáveis dos dados do arquivo de calibração e tratamento dos dados removendo dados vazios, \texttt{NONE}.
+  \item Solicitação do nome do usuário: O código solicita ao usuário que digite seu nome a fim de resgatar quem realizou a calibração.
+  \item Leitura, importação como variáveis dos dados do arquivo de armazenamento das calibrações e tratamento dos dados removendo dados vazios, \texttt{NONE}.
+  \item Identificação dos picos de energia: O código procura pelos picos de energia para os elementos cobalto-57 e cobalto-60 dentro da margem de variação nos dados lidos anteriormente. Se os picos não forem encontrados, uma mensagem é exibida e o programa é encerrado.
+  \item Salvando os dados no arquivo Excel: Os dados convertidos são salvos na planilha do Excel com todos os dados de calibração do mês.
+  \item Criação de gráficos: plotar gráficos com os dados lidos da planilha, uma figura com 2x2 subplots e plota os gráficos com os dados fornecidos, que são salvos no mesmo diretório como arquivos PNG.
+  \item Fim do código.
+\end{itemize}
+
+
+\subsection{Quality Parameters}
+\label{sec:qualityparameters} 
+The subplots, in addition to containing calibration data, count as parameters in order to verify credibility.
+
+For the Energy subplot, the acceptable limits were added (green and red lines, that is, the maximum and minimum parameter where the calibration is considered good, and a variation of 2 keV up and down was used, that is 120, 06 and 124.06 for $^{57}$Co and 1330.5 and 1334.5 for $^{60}$Co.
+In the subplots of the resolution, it is possible to notice a blue line, which represents the average of the resolution of the previous month, using this average the acceptable limits are plotted, of which a variation of 20\% was used for $^{57}$Co and 30\% for $^{60}$Co*.
+
+A good calibration will maintain a certain constancy in the data as seen in Image \ref{fig:set18}.
+
+In image \ref{fig:abr09} we can see a large dispersion of data for the resolution of $^{57}$Co.
+
+Looking at image \ref{fig:jan18} at the end of the month, when the equipment vacuum was redone, leading to an increase in energy and a significant drop in resolution.
+
+These plots are very important since they show the existence of factors that can affect the efficiency and/or resolution of HPG detectors, and include problems in the detector's crystal (such as defects induced by neutrons or contact migration, for example), in the assembly of the detector (loss of vacuum is usually the dominant factor) or in the associated electronics\citep{knoll2010radiation}.
+\\
+\subsection{Errors}
+\label{sec:erros} 
+The computer spreadsheets, one for each detector, were first checked for obvious typing errors, as problems with dates and/or the decimal separator; in this process some of the data had to be discarded as the results were completely incompatible with the whole, indicating some form of unidentified experimental mistake\citep{zahn2017long}, errors that in the chart plotting process can cause errors of the "ValueError" type, which indicates an incompatibility between the amount of data on the X and Y axes, which occurs when the data that were imported from these spreadsheets have sizes/quantity many different.
+
+It is also possible to comment on the TypeError, which occurs when we have an incompatibility of data types, which basically originates when it contains a word instead of a numerical value, such as observations about the equipment, which prevents the graph from being generated.
+
+\subsection{Tests}
+\label{sec:tests} 
+
+The tests were carried out using 5 different detectors, 3 of which were manufactured by Canberra Industries, here named A, B and C, both with 2000keV resolutions, and the other 2 produced by Ortec Ametek, named D and E, both also with a 2000keV resolution. .
+
+For 14 days, calibration was carried out on these detectors in order to obtain an average to compare the resolution.\\ 
+
+INFELIZMENTE NAO FIZERAM NÉ? \\ 
+
+July- 21 days\\ 
+August- 19 days\\ 
+September- 2 days\\ 
+
+
+Subsequently, with the average obtained, a daily record of the calibration of the detectors was carried out for 2 months. In order to validate the method and even make a comparison between detectors from different industries.
+
+\subsection{NONE NAME}
+\label{sec:none} 
+
+By pre-programming all chart settings, you can automate the plotting process, save time and eliminate the need to manually configure each chart element whenever needed. Settings such as name, title, x and y axes, reference lines, size, etc. are already defined by the function, so just call the function with your specific data and the graph will be automatically generated with all settings and saved.
+
+This automated approach allows standardization of generated graphics, ensures visual consistency, and eliminates human error associated with manual configuration. Furthermore, it becomes easy to create multiple charts one after the other, streamlining the process of analyzing and visualizing data.
+
+So this advantage highlighted in the description is valid and it shows how this code can help you draw graphs efficiently and automatically, saving time and effort in the process.
+
+The code is written to anticipate all possible errors, errors that the user does not make but cannot prevent. One of them, for example, the program completes the calibration only if there is correct activity for both cobalts, otherwise it will not complete until this compensation error is resolved, for example, \ref{sec:erros}, ie. leaves no gaps. in the table, it does not leave an item of that day, not even a record, but suppose that by chance the user accidentally deletes one of these dates, the program will not work. The program performs checks, \ref{sec:Verifications}, one of which is that all variables have the same amount of data, so that the program does not run with incorrect or missing data, thus creating results that can be wrong or misinterpreted.
+
+\subsection{Verifications}
+\label{sec:Verifications} 
+aqui as verificacoes 
+
+\section{Conclusions}
+
+I haven't had enough capacity to think of a conclusion until now...
+
+Actually I only conclude that my method is very good and efficient
+
+I don't know if it's interesting to make a comparison of how much time it takes to do the manual process vs. the program code and how long the program generates the control graphics, but, it's something to think.
+
+
+\section*{Acknowledgements}
+
+The authors would like to thank FAPESP, CNPq and CAPES for funding the detectors used in this study and the personnel for the many years of daily inspection and recording that made possible the this work.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Data Availability}
+The Open Source code discussed in this document at can already be found in the repository available on  \href{https://github.com/Gustavo-Pires/CCR-Calculo-de-concetracao-de-rafionuclideos}{GitHub} and further information is available upon reasonable request to the corresponding author.
+
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+
+% Alternatively you could enter them by hand, like this:
+% This method is tedious and prone to error if you have lots of references
+%\begin{thebibliography}{99}
+%\bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
+%Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
+%\bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
+%Others S., 2012, Journal of Interesting Stuff, 17, 198
+%\end{thebibliography}
+
+
+\appendix
+
+\section{Some extra information}
+
+An important information is that, when the activity of the source of $^{57}$Co becomes too low, this source is changed – but not the one of $^{60}$Co \citep{zahn2017long}, which activity can be noticeable by the quality control plots, thus identifying this low activity and changing the source.
+
+The detector present at IPEN's Neutron Activation Analysis Laboratory, which used the data to carry out the tests, is manufactured by Canberra Industries with a nominal resolution of 2.0 keV.
+
+\bibliographystyle{elsarticle-harv} 
+\bibliography{example}
+
+\section{Appendix Pictures}
+Here you can find the images mentioned in this article
+\\
+
+\begin{figure}
+ \centering
+ \includegraphics[width=0.9\linewidth]{CANB1-JAN17.png}
+ \caption{January 2017.}
+ \label{fig:jan17}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\linewidth]{CANB1-SET18.png}
+  \caption{September 2018.}
+  \label{fig:set18}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\linewidth]{CANB1-ABR09.png}
+  \caption{April 2009.}
+  \label{fig:abr09}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\linewidth]{CANB1-JAN18.png}
+  \caption{January 2018.}
+  \label{fig:jan18}
+\end{figure}
+
+
+\appendix
+%%\section{Appendix title 1}
+%% \label{}
+
+%%\section{Appendix title 2}
+%% \label{}
+
+%% If you have bibdatabase file and want bibtex to generate the
+%% bibitems, please use
+%%
+
+
+%% else use the following coding to input the bibitems directly in the
+%% TeX file.
+
+%%\begin{thebibliography}{00}
+
+%% \bibitem[Author(year)]{label}
+%% For example:
+
+%% \bibitem[Aladro et al.(2015)]{Aladro15} Aladro, R., Martín, S., Riquelme, D., et al. 2015, \aas, 579, A101
+
+
+%%\end{thebibliography}
+
+\end{document}
+
+\endinput
+%%
+%% End of file `elsarticle-template-harv.tex'.
