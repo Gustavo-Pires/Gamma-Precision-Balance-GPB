@@ -1,7 +1,7 @@
 for i in range(20):
         
     import time
-    start_time = time.time()  # Captura o tempo de in√≠cio
+    start_time = time.time()  # Captura o tempo de in√É¬≠cio
     import xlwings as xw
     import matplotlib.pyplot as plt
     from datetime import datetime
@@ -9,9 +9,9 @@ for i in range(20):
     import os
     import glob
     
-    diretorio_atual = os.path.abspath(os.path.dirname(__file__))  # Obter o caminho absoluto do diret√≥rio atual
+    diretorio_atual = os.path.abspath(os.path.dirname(__file__))  # Obter o caminho absoluto do diret√É¬≥rio atual
     
-    arquivos_excel = glob.glob(os.path.join(diretorio_atual, '*.xls'))  # Obter a lista de arquivos Excel no diret√≥rio
+    arquivos_excel = glob.glob(os.path.join(diretorio_atual, '*.xls'))  # Obter a lista de arquivos Excel no diret√É¬≥rio
     
     def plotar_grafico(ekev_57, ekev_60, dia, titulo, media_57, media_60, incerteza_57, incerteza_60):
         fig, axs = plt.subplots(2, 2, figsize=(12, 8))
@@ -80,9 +80,9 @@ for i in range(20):
     
         dia = ws.range("B9:B40").options(numbers=str).value
         dia = [x.strftime('%d') if isinstance(x, datetime) else x for x in dia if x is not None]
-        total_dias.extend(dia)  # Adiciona os dias ‡ lista total_dias
+        total_dias.extend(dia)  # Adiciona os dias √† lista total_dias
       
-        nome_arquivo = os.path.splitext(os.path.basename(arquivo_excel))[0]  # Obter o nome do arquivo sem a extens„o
+        nome_arquivo = os.path.splitext(os.path.basename(arquivo_excel))[0]  # Obter o nome do arquivo sem a extens√£o
         titulo_completo = f"{nome_arquivo}"
     
         ekev_57 = [float(x) for x in ekev_57 if x is not None and x.strip() != '']
@@ -90,8 +90,8 @@ for i in range(20):
         reso_57 = [float(x) for x in reso_57 if x is not None and x.strip() != '']
         reso_60 = [float(x) for x in reso_60 if x is not None and x.strip() != '']
     
-        incerteza_57 = 0.2 * media_57  # 20% da mÈdia de incerteza para o Cobalto-57
-        incerteza_60 = 0.3 * media_60  # 30% da mÈdia de incerteza para o Cobalto-60
+        incerteza_57 = 0.2 * media_57  # 20% da m√©dia de incerteza para o Cobalto-57
+        incerteza_60 = 0.3 * media_60  # 30% da m√©dia de incerteza para o Cobalto-60
     
         plotar_grafico(ekev_57, ekev_60, dia, titulo_completo, media_57, media_60, incerteza_57, incerteza_60)
         #matplotlib.pyplot.close()
@@ -103,15 +103,15 @@ for i in range(20):
     
     # Exibe os resultados
     print(f"Tempo decorrido: {elapsed_time:.2f} segundos")
-    print(f"N˙mero de arquivos Excel analisados: {num_arquivos_excel}")
-    print(f"N˙mero de dias de calibraÁ„o plotados: {num_dias_calibracao}")
+    print(f"N√∫mero de arquivos Excel analisados: {num_arquivos_excel}")
+    print(f"N√∫mero de dias de calibra√ß√£o plotados: {num_dias_calibracao}")
     
     
     
     end_time = time.time()
     elapsed_time = end_time - start_time
-    print("Tempo de execuÁ„o:", elapsed_time, "segundos")
-    print("CalibraÁ„o concluida")
+    print("Tempo de execu√ß√£o:", elapsed_time, "segundos")
+    print("Calibra√ß√£o concluida")
     
     # Formata elapsed_time como string com separador decimal ponto
     tempo_str = "{:.2f}".format(elapsed_time)
@@ -128,5 +128,10 @@ for i in range(20):
     print("Teste numero:", len(tempo))
     
     wb.save()
-    
+    from PIL import Image
+    imagem_salva = f'{nome_arquivo}.png'
+    img = Image.open(imagem_salva)
+    img.show()  # Abre a imagem no visualizador de imagens padr√£o do sistema    
+
+
     
