@@ -6,35 +6,19 @@ import os
 import glob
 import sys
 import shutil
-
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
 #---------------------------------------------CONTAGEM -------------------------------------
 print("=" * 20 + "CALIBRAÇÃO INICIADA" + "=" * 20)
 
 diretorio_principal = os.getcwd() # usa o diretório atual como o diretório principal
 
-# Sinalizador para indicar se ocorreram erros
-ocorreu_erro = False
-mensagens_erro = []
+janela_padrao = Tk().withdraw()
+caminho_do_arquivo = askopenfilename(filetypes=[("Arquivos csv", "*.csv")])
 
-for diretorio_atual, _, arquivos in os.walk(diretorio_principal):
-    arquivos_csv = [f for f in arquivos if f.endswith('.csv')]
-
-    if len(arquivos_csv) == 0:
-        mensagem = f"Nenhum arquivo CSV foi encontrado no diretório {diretorio_atual}."
-        print(mensagem)
-        mensagens_erro.append(mensagem + "\n")
-        ocorreu_erro = True
-        continue
-    elif len(arquivos_csv) > 1:
-        mensagem = f"Mais de um arquivo CSV foi encontrado no diretório {diretorio_atual}. \nDeixe apenas o arquivo correto"
-        print(mensagem)
-        mensagens_erro.append(mensagem + "\n")
-        ocorreu_erro = True
-        continue
-
-    arquivo_csv = os.path.join(diretorio_atual, arquivos_csv[0])
+if caminho_do_arquivo:
     try:
-        with open(arquivo_csv, newline='') as file:
+        with open(caminho_do_arquivo, newline='') as file:
             lines = file.readlines()
 
             # Extrair as colunas específicas
@@ -56,21 +40,19 @@ for diretorio_atual, _, arquivos in os.walk(diretorio_principal):
             incerteza = [x if x != 'None' else '' for x in incerteza]
 
             # Mover o arquivo CSV para a pasta "ARQUIVO"
-            pasta_destino = os.path.join(diretorio_atual, 'ARQUIVO')
+            pasta_destino = os.path.join(os.path.dirname(caminho_do_arquivo), 'ARQUIVO')
             if not os.path.exists(pasta_destino):
                 os.makedirs(pasta_destino)
-            
-            nome_arquivo = os.path.basename(arquivo_csv)
-            caminho_destino = os.path.join(pasta_destino, nome_arquivo)
-            
-            shutil.move(arquivo_csv, caminho_destino)
-            print
-    except FileNotFoundError:
-        mensagem = "Arquivo CSV não encontrado."
-        print(mensagem)
-        mensagens_erro.append(mensagem + "\n")
-        ocorreu_erro = True
 
+            nome_arquivo = os.path.basename(caminho_do_arquivo)
+            caminho_destino = os.path.join(pasta_destino, nome_arquivo)
+
+            shutil.move(caminho_do_arquivo, caminho_destino)
+    except FileNotFoundError:
+        print("Arquivo CSV não encontrado.")
+else:
+    print("Nenhum arquivo foi selecionado.")
+    
 #------------------------------------------------------------------------------------------------------
 end_time1= time.time()
 
