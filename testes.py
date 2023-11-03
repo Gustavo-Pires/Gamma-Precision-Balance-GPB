@@ -9,7 +9,7 @@ import pandas as pd
 import os
 #------------------------------------------------------------------------------------------------------
 start_time = time.time()
-
+ 
 # Obter o caminho absoluto do diretório em que o código está sendo executado
 diretorio_atual = os.path.abspath(os.path.dirname(__file__))
 
