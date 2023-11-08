@@ -1,2 +1,1 @@
-# CODIGO-DE-CALCULO-DE-RADIONUCLIDEOS-CCR-
-Arquivo para realizar CALCULO DE RADIONUCLIDEOS
+Gamma-Precision-Balance-GPB
