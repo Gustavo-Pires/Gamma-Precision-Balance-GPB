@@ -1,4 +1,4 @@
-\\Gamma-Precision-Balance-GPB
+#Gamma-Precision-Balance-GPB
 
 
 The code written in python named Gamma Precision Balance (GPB), takes this .csv file, im- ports/extracts its necessary data, and using repetition structures it finds the determined peak of the 2 elements with a margin of 1 keV of variation for more or less, so as the characteristic peak of is 57Co is 122.06 keV, it searches between 121.06 and 123.06keV and for 60Co with characteristic peak of 1332, 5 keV, between 1331.5 and 1333.5 keV. This is the first check that the program makes, if the energy peak is not within this range, the program does not continue if there is no energy peak within this check, it informs the user and asks to call someone responsible. To avoid data with incorrect precision
