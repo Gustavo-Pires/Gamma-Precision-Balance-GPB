@@ -1,5 +1,5 @@
 import time
-start_time = time.time()  # Captura o tempo de inÃ­cio
+start_time = time.time() 
 import xlwings as xw
 import matplotlib.pyplot as plt
 from datetime import datetime
@@ -7,9 +7,9 @@ import matplotlib.dates as mdates
 import os
 import glob
 
-diretorio_atual = os.path.abspath(os.path.dirname(__file__))  # Obter o caminho absoluto do diretÃ³rio atual
+diretorio_atual = os.path.abspath(os.path.dirname(__file__)) 
 
-arquivos_excel = glob.glob(os.path.join(diretorio_atual, '*.xls'))  # Obter a lista de arquivos Excel no diretÃ³rio
+arquivos_excel = glob.glob(os.path.join(diretorio_atual, '*.xls'))  
 
 def plotar_grafico(ekev_57, ekev_60, dia, titulo, media_57, media_60, incerteza_57, incerteza_60):
     fig, axs = plt.subplots(2, 2, figsize=(12, 8))
@@ -28,7 +28,7 @@ def plotar_grafico(ekev_57, ekev_60, dia, titulo, media_57, media_60, incerteza_
     ax2.set_title('Cobalto-57 (122,06 keV)')
     ax2.set_xlabel('Dia')
     ax2.set_ylabel('Resolucao')
-    ax2.set_ylim(0.5, 2)  # Definindo os limites do eixo Y para o Co-57
+    ax2.set_ylim(0.5, 2)  
     ax2.axhline(y=media_57)
     ax2.axhline(y=media_57 + incerteza_57, color='red', linestyle='--', label='Maior Incerteza')
     ax2.axhline(y=media_57 - incerteza_57, color='green', linestyle='--', label='Menor Incerteza')
@@ -46,7 +46,7 @@ def plotar_grafico(ekev_57, ekev_60, dia, titulo, media_57, media_60, incerteza_
     ax4.set_title('Cobalto-60 (1332,5 keV)')
     ax4.set_xlabel('Dia')
     ax4.set_ylabel('Resolucao')
-    ax4.set_ylim(1, 3)  # Definindo os limites do eixo Y para o Co-60
+    ax4.set_ylim(1, 3) 
     ax4.axhline(y=media_60)
     ax4.axhline(y=media_60 + incerteza_60, color='red', linestyle='--', label='Maior Incerteza')
     ax4.axhline(y=media_60 - incerteza_60, color='green', linestyle='--', label='Menor Incerteza')
@@ -78,9 +78,9 @@ for arquivo_excel in arquivos_excel:
 
     dia = ws.range("B9:B40").options(numbers=str).value
     dia = [x.strftime('%d') if isinstance(x, datetime) else x for x in dia if x is not None]
-    total_dias.extend(dia)  # Adiciona os dias à lista total_dias
+    total_dias.extend(dia)  # Adiciona os dias Ã  lista total_dias
   
-    nome_arquivo = os.path.splitext(os.path.basename(arquivo_excel))[0]  # Obter o nome do arquivo sem a extensão
+    nome_arquivo = os.path.splitext(os.path.basename(arquivo_excel))[0]  # Obter o nome do arquivo sem a extensÃ£o
     titulo_completo = f"{nome_arquivo}"
 
     ekev_57 = [float(x) for x in ekev_57 if x is not None and x.strip() != '']
@@ -88,8 +88,8 @@ for arquivo_excel in arquivos_excel:
     reso_57 = [float(x) for x in reso_57 if x is not None and x.strip() != '']
     reso_60 = [float(x) for x in reso_60 if x is not None and x.strip() != '']
 
-    incerteza_57 = 0.2 * media_57  # 20% da média de incerteza para o Cobalto-57
-    incerteza_60 = 0.3 * media_60  # 30% da média de incerteza para o Cobalto-60
+    incerteza_57 = 0.2 * media_57  # 20% da mÃ©dia de incerteza para o Cobalto-57
+    incerteza_60 = 0.3 * media_60  # 30% da mÃ©dia de incerteza para o Cobalto-60
 
     plotar_grafico(ekev_57, ekev_60, dia, titulo_completo, media_57, media_60, incerteza_57, incerteza_60)
 
@@ -101,8 +101,8 @@ num_dias_calibracao = len(total_dias)
 
 # Exibe os resultados
 print(f"Tempo decorrido: {elapsed_time:.2f} segundos")
-print(f"Número de arquivos Excel analisados: {num_arquivos_excel}")
-print(f"Número de dias de calibração plotados: {num_dias_calibracao}")
+print(f"NÃºmero de arquivos Excel analisados: {num_arquivos_excel}")
+print(f"NÃºmero de dias de calibraÃ§Ã£o plotados: {num_dias_calibracao}")
 
 
 
